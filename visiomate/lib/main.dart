@@ -11,16 +11,45 @@ Future<void> main() async {
 }
 
 /// CameraApp is the Main Application.
-class CameraApp extends StatefulWidget {
+class CameraApp extends StatelessWidget {
   /// Default Constructor
-  const CameraApp({super.key});
+  const CameraApp({Key? key}) : super(key: key);
 
   @override
-  State<CameraApp> createState() => _CameraAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const CameraScreen(),
+    );
+  }
 }
 
-class _CameraAppState extends State<CameraApp> {
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({Key? key}) : super(key: key);
+
+  @override
+  _CameraScreenState createState() => _CameraScreenState();
+}
+
+class _CameraScreenState extends State<CameraScreen> {
   late CameraController controller;
+  int _selectedIndex = 0;
+  bool _navigationStarted = false;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _toggleNavigation() {
+    setState(() {
+      _navigationStarted = !_navigationStarted;
+    });
+  }
 
   @override
   void initState() {
@@ -56,8 +85,43 @@ class _CameraAppState extends State<CameraApp> {
     if (!controller.value.isInitialized) {
       return Container();
     }
-    return MaterialApp(
-      home: CameraPreview(controller),
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          CameraPreview(controller),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: FloatingActionButton(
+                onPressed: _toggleNavigation,
+                child: Icon(
+                  _navigationStarted ? Icons.stop : Icons.navigate_next,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help),
+            label: 'Help',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
