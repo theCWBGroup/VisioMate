@@ -1,126 +1,90 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-late List<CameraDescription> _cameras;
+import 'vision_detector_views/label_detector_view.dart';
+import 'vision_detector_views/object_detector_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  _cameras = await availableCameras();
-  runApp(const CameraApp());
+  runApp(MyApp());
 }
 
-/// CameraApp is the Main Application.
-class CameraApp extends StatelessWidget {
-  /// Default Constructor
-  const CameraApp({Key? key}) : super(key: key);
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const CameraScreen(),
+      debugShowCheckedModeBanner: false,
+      home: Home(),
     );
   }
 }
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key}) : super(key: key);
-
-  @override
-  _CameraScreenState createState() => _CameraScreenState();
-}
-
-class _CameraScreenState extends State<CameraScreen> {
-  late CameraController controller;
-  int _selectedIndex = 0;
-  bool _navigationStarted = false;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  void _toggleNavigation() {
-    setState(() {
-      _navigationStarted = !_navigationStarted;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller = CameraController(_cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            // Handle access errors here.
-            break;
-          default:
-            // Handle other errors here.
-            break;
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          CameraPreview(controller),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: FloatingActionButton(
-                onPressed: _toggleNavigation,
-                child: Icon(
-                  _navigationStarted ? Icons.stop : Icons.navigate_next,
+      appBar: AppBar(
+        title: Text('VisioMate'),
+        // add eye icon to the app bar
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15), // square shape
+                  ),
                 ),
+                minimumSize: MaterialStateProperty.all<Size>(
+                    Size(100, 100)), // square size
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ImageLabelView()),
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // take the minimum space
+                children: <Widget>[
+                  Icon(Icons.photo_album), // eye icon
+                  Text('Image Labeling'),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15), // square shape
+                  ),
+                ),
+                minimumSize: MaterialStateProperty.all<Size>(
+                    Size(100, 100)), // square size
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ObjectDetectorView()),
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // take the minimum space
+                children: <Widget>[
+                  Icon(Icons.yard),
+                  Text('Object Detection'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
