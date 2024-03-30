@@ -1,3 +1,4 @@
+import 'package:ar_flutter_plugin_flutterflow/ar_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 
 import 'vision_detector_views/label_detector_view.dart';

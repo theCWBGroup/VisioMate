@@ -45,6 +45,7 @@ dependencies:
     path: ../google_mlkit_language_id
   google_mlkit_translation:
     path: ../google_mlkit_translation
+  ar_flutter_plugin_flutterflow: ^0.7.46
 
 
 dev_dependencies:
