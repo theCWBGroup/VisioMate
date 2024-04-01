@@ -58,6 +58,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/ml/
-    - assets/arcore_assets/duck.gltf
-    - assets/arcore_assets/duck.bin
-    - assets/arcore_assets/Image_0.png
+    - assets/arcore_assets/navigation_pin/scene.gltf
+    - assets/arcore_assets/navigation_pin/scene.bin    

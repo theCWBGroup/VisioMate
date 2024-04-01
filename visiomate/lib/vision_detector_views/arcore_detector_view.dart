@@ -107,8 +107,8 @@ class _ObjectGesturesWidgetState extends State<ObjectGesturesWidget> {
       // Add note to anchor
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "assets/arcore_assets/duck.gltf",
-          name: "duck",
+          uri: "assets/arcore_assets/navigation_pin/scene.gltf",
+          name: "Navigation Pin",
           scale: Vector3(0.1, 0.1, 0.1),
           position: Vector3(0, 0, 0),
           rotation: Vector4(0, 1, 0, 0));
