@@ -8,7 +8,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: '>=3.2.4 <4.0.0'
 
 dependencies:
   flutter:
@@ -17,6 +17,7 @@ dependencies:
   camera: ^0.10.5+3
   path: ^1.8.2
   path_provider: ^2.1.0
+  cupertino_icons: ^1.0.2
 
   google_mlkit_commons:
 #    path: ../google_mlkit_commons
@@ -45,6 +46,7 @@ dependencies:
     path: ../google_mlkit_language_id
   google_mlkit_translation:
     path: ../google_mlkit_translation
+  ar_flutter_plugin_flutterflow: ^0.7.46
 
 
 dev_dependencies:
@@ -56,3 +58,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/ml/
+    - assets/arcore_assets/navigation_pin/scene.gltf
+    - assets/arcore_assets/navigation_pin/scene.bin    

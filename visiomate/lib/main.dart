@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'vision_detector_views/arcore_detector_view.dart';
 import 'vision_detector_views/label_detector_view.dart';
 import 'vision_detector_views/object_detector_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(MyApp());
 }
 
@@ -25,66 +24,83 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('VisioMate'),
-        // add eye icon to the app bar
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.visibility), // Eye icon
+            onPressed: () {
+              // Implement functionality here
+            },
+          ),
+        ],
       ),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), // square shape
-                  ),
-                ),
-                minimumSize: MaterialStateProperty.all<Size>(
-                    Size(100, 100)), // square size
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ImageLabelView()),
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // take the minimum space
-                children: <Widget>[
-                  Icon(Icons.photo_album), // eye icon
-                  Text('Image Labeling'),
-                ],
+        child: GridView.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          padding: EdgeInsets.all(10),
+          children: <Widget>[
+            _buildButton(
+              context,
+              Icons.photo_album,
+              'Image Labeling',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ImageLabelView()),
               ),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), // square shape
-                  ),
-                ),
-                minimumSize: MaterialStateProperty.all<Size>(
-                    Size(100, 100)), // square size
+            _buildButton(
+              context,
+              Icons
+                  .emoji_food_beverage_rounded, // Changed icon for better representation
+              'Object Detection',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ObjectDetectorView()),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ObjectDetectorView()),
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // take the minimum space
-                children: <Widget>[
-                  Icon(Icons.yard),
-                  Text('Object Detection'),
-                ],
+            ),
+            _buildButton(
+              context,
+              Icons.map, // Changed icon for better representation
+              'ARCore Mapping',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ObjectGesturesWidget()),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildButton(BuildContext context, IconData icon, String text,
+      VoidCallback onPressed) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        minimumSize: MaterialStateProperty.all<Size>(Size(100, 100)),
+        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+      onPressed: onPressed,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(icon, size: 30), // Increased icon size for better visibility
+          SizedBox(height: 10), // Added space between icon and text
+          Text(text, style: TextStyle(fontSize: 16)), // Adjusted text style
+        ],
       ),
     );
   }

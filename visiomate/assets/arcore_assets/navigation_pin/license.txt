@@ -1,0 +1,8 @@
+Model Information:
+* title:	Navigation Pin
+* source:	https://sketchfab.com/3d-models/navigation-pin-92abfadfd5da488ea0e97ad5f5942f77
+* author:	Whitepoint (https://sketchfab.com/whitepoint)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
