@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:appcheck/appcheck.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'vision_detector_views/arcore_detector_view.dart';
 import 'vision_detector_views/label_detector_view.dart';
 import 'vision_detector_views/object_detector_view.dart';
@@ -72,6 +75,31 @@ class Home extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => ObjectGesturesWidget()),
               ),
             ),
+            _buildButton(context, Icons.navigation, 'VisioMateNavigator',
+                () async {
+
+              final website = Uri(
+                  scheme: 'https',
+                  host: 'github.com',
+                  path: '/theCWBGroup/VisioMateNavigator/releases');
+              var flag = 0;
+              final installedApps = await AppCheck.getInstalledApps();
+              if (installedApps != null) {
+                for (var app in installedApps) {
+                  if (app.packageName.contains('festunavigator')) {
+                    debugPrint('Launching ${app.packageName}');
+                    await AppCheck.launchApp(app.packageName);
+                    flag = 1;
+                    break;
+                  }
+                }
+              } else {
+                debugPrint('No apps found');
+              }
+              if (flag == 0) launchUrl(website);
+              //}
+              debugPrint('No apps found');
+            }),
           ],
         ),
       ),

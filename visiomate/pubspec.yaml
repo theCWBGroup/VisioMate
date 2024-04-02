@@ -18,6 +18,8 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.1.0
   cupertino_icons: ^1.0.2
+  appcheck: ^1.0.6
+  url_launcher: ^6.1.11
 
   google_mlkit_commons:
 #    path: ../google_mlkit_commons
