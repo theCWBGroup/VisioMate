@@ -82,7 +82,9 @@ class Home extends StatelessWidget {
                   scheme: 'https',
                   host: 'github.com',
                   path: '/theCWBGroup/VisioMateNavigator/releases');
+
               var flag = 0;
+              
               final installedApps = await AppCheck.getInstalledApps();
               if (installedApps != null) {
                 for (var app in installedApps) {
@@ -93,9 +95,8 @@ class Home extends StatelessWidget {
                     break;
                   }
                 }
-              } else {
-                debugPrint('No apps found');
               }
+
               if (flag == 0) launchUrl(website);
               //}
               debugPrint('No apps found');
