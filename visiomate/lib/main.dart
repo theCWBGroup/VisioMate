@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'global/global_map.dart';
 import 'package:appcheck/appcheck.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,6 +10,7 @@ import 'vision_detector_views/object_detector_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
+  startMapFlushTimer();
 }
 
 class MyApp extends StatelessWidget {
