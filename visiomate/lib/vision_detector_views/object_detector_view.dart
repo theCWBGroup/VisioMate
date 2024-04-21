@@ -1,10 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
-
+import '../global/global_map.dart'; // Import the global map
 import 'detector_view.dart';
 import 'painters/object_detector_painter.dart';
 import 'utils.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ObjectDetectorView extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class ObjectDetectorView extends StatefulWidget {
 }
 
 class _ObjectDetectorView extends State<ObjectDetectorView> {
+  FlutterTts flutterTts = FlutterTts();
   ObjectDetector? _objectDetector;
   DetectionMode _mode = DetectionMode.stream;
   bool _canProcess = false;
@@ -20,6 +22,7 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
   String? _text;
   var _cameraLensDirection = CameraLensDirection.back;
   int _option = 0;
+
   final _options = {
     'default': '',
     'object_custom': 'object_labeler.tflite',
@@ -181,8 +184,11 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
     setState(() {
       _text = '';
     });
+    // Sleep for 2 sec
+    // await Future.delayed(Duration(seconds: 1));
     final objects = await _objectDetector!.processImage(inputImage);
-    // print('Objects found: ${objects.length}\n\n');
+    await flutterTts.setQueueMode(1);
+
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {
       final painter = ObjectDetectorPainter(
@@ -192,14 +198,27 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
         _cameraLensDirection,
       );
       _customPaint = CustomPaint(painter: painter);
+      print('Objects found: ${objects.length}\n\n');
+
+      for (final object in objects) {
+        for (final label in object.labels) {
+          //final labelName = label.text;
+          final labelName = object.labels[0].text;
+          if (!globalMap.containsKey(labelName)) {
+            globalMap[labelName] = 1;
+            flutterTts.speak('There is a $labelName');
+            print('i am lebelname. $labelName');
+          }
+        }
+      }
     } else {
       String text = 'Objects found: ${objects.length}\n\n';
       for (final object in objects) {
         text +=
             'Object:  trackingId: ${object.trackingId} - ${object.labels.map((e) => e.text)}\n\n';
+        print('Object: ${object.labels.map((e) => e.text)}');
       }
       _text = text;
-      // TODO: set _customPaint to draw boundingRect on top of image
       _customPaint = null;
     }
     _isBusy = false;
